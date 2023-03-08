@@ -329,7 +329,7 @@ public class Zip {
             _ = fileManager.fileExists(atPath: filePath, isDirectory: &isDirectory)
             if !isDirectory.boolValue {
                 guard let input = fopen(filePath, "r") else {
-                    throw ZipError.zipFail
+                    continue
                 }
                 defer { fclose(input) }
                 let fileName = path.fileName
@@ -351,7 +351,7 @@ public class Zip {
                 }
                 catch {}
                 guard let buffer = malloc(chunkSize) else {
-                    throw ZipError.zipFail
+                    continue
                 }
                 if let password = password, let fileName = fileName {
                     zipOpenNewFileInZip3(zip, fileName, &zipInfo, nil, 0, nil, 0, nil,Z_DEFLATED, compression.minizipCompression, 0, -MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY, password, 0)
